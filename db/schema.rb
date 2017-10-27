@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171020163641) do
+ActiveRecord::Schema.define(version: 20171027153513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.date "deadline"
+    t.string "state"
+    t.integer "owner_score"
+    t.integer "developer_score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "owner_id"
+    t.bigint "developer_id"
+    t.index ["developer_id"], name: "index_projects_on_developer_id"
+    t.index ["owner_id"], name: "index_projects_on_owner_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -48,4 +63,6 @@ ActiveRecord::Schema.define(version: 20171020163641) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "projects", "users", column: "developer_id"
+  add_foreign_key "projects", "users", column: "owner_id"
 end
