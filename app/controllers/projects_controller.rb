@@ -3,8 +3,6 @@ class ProjectsController < ApplicationController
 
   def create
     project = Project.new(project_params)
-    project.owner = current_user
-    project.state = 'open'
     if project.save
       render json: project, status: 201
     else
@@ -14,6 +12,7 @@ class ProjectsController < ApplicationController
 
   private
   def project_params
-    params.permit(:name, :description, :deadline)
+    technologies = Technology.where(id: params[:technologies_ids])
+    params.permit(:name, :description, :deadline).merge(state: 'open', technologies: technologies, owner: current_user)
   end
 end
