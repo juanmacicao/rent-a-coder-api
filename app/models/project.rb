@@ -10,6 +10,8 @@ class Project < ApplicationRecord
   validates :name, :description, :deadline, presence: true
   validate :deadline_not_in_past
 
+  private
+
   def deadline_not_in_past
     errors.add(:deadline, "must be in future") if deadline.present? && deadline <= Date.today
   end
