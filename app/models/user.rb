@@ -22,4 +22,22 @@ class User < ActiveRecord::Base
     projects = Project.where(owner_id: self.id)
     projects.map { |project| ProjectSerializer.new(project) }
   end
+
+  def developer_score
+    score = 0
+    projects = Project.where(developer_id: self.id)
+    projects.each { |project|
+      score += project.developer_score unless project.developer_score.nil?
+    }
+    score
+  end
+
+  def owner_score
+    score = 0
+    projects = Project.where(owner_id: self.id)
+    projects.each { |project|
+      score += project.owner_score unless project.owner_score.nil?
+    }
+    score
+  end
 end
