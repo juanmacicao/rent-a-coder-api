@@ -15,4 +15,11 @@ class User < ActiveRecord::Base
           #:confirmable
 
   include DeviseTokenAuth::Concerns::User
+
+  private
+
+  def uploaded_projects
+    projects = Project.where(owner_id: self.id)
+    projects.map { |project| ProjectSerializer.new(project) }
+  end
 end
