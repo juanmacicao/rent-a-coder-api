@@ -18,6 +18,19 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def update
+    project = Project.find(params[:id])
+    if project.owner != current_user
+      render json: { errors: { user: "must be the project owner" } }, status: 422
+    elsif !project.candidates.empty?      
+      render json: { errors: { candidates: "must be empty" } }, status: 422
+    elsif project.update(project_params)
+      render json: { success: true }, status: 200
+    else
+      render json: { errors: project.errors }, status: 422
+    end
+  end
+
   private
   def project_params
     technologies = Technology.where(id: params[:technologies_ids])
