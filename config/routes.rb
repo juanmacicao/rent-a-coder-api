@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resource :users, only: [:show], path: '/profile'
   resources :projects, only: [:create, :index, :update]
   resources :offers, only: [:create]
+  resources :technologies, only: [:index]
 end
