@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :projects, only: [:create, :index, :update]
   resources :offers, only: [:create]
   resources :technologies, only: [:index]
+  resources :candidates, only: [:show]
 end
