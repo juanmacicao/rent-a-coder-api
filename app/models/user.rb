@@ -23,6 +23,11 @@ class User < ActiveRecord::Base
     projects.map { |project| ProjectSerializer.new(project) }
   end
 
+  def projects_as_candidate
+    offers = Offer.joins(:project).where(user_id: self.id)
+    offers.map { |offer| ProjectSerializer.new(offer.project) }
+  end
+
   def developer_score
     score = 0
     projects = Project.where(developer_id: self.id)
