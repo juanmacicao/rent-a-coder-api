@@ -22,12 +22,27 @@ class ProjectsController < ApplicationController
     project = Project.find(params[:id])
     if project.owner != current_user
       render json: { errors: { user: "must be the project owner" } }, status: 422
-    elsif !project.candidates.empty?      
+    elsif !project.candidates.empty?
       render json: { errors: { candidates: "must be empty" } }, status: 422
     elsif project.update(project_params)
       render json: { success: true }, status: 200
     else
       render json: { errors: project.errors }, status: 422
+    end
+  end
+
+  def assign_developer
+    project = Project.find(params[:project_id])
+    developer_selected = User.find(params[:developer_id])
+    if project.owner != current_user
+      render json: { errors: { user: "must be the project owner" } }, status: 422
+    elsif project.candidates.include?(developer_selected)
+      project.developer = developer_selected
+      project.status = 'in_progress'
+      project.save
+      render json: { success: true }, status: 201
+    else
+      render json: { errors: { developer: "must be a project candidate" } }, status: 422
     end
   end
 
