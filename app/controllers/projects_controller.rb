@@ -35,15 +35,17 @@ class ProjectsController < ApplicationController
     project = Project.find(params[:project_id])
     developer_selected = User.find(params[:developer_id])
     if project.owner != current_user
-      render json: { errors: { user: "must be the project owner" } }, status: 422
-    elsif project.candidates.include?(developer_selected)
+      project.errors.add(:owner, :invalid)
+    elsif project.state != 'open'
+      project.errors.add(:state, :invalid)
+    elsif !project.candidates.include?(developer_selected)
+      project.errors.add(:developer, :invalid)
+    else
       project.developer = developer_selected
       project.state = 'in_progress'
       project.save
-      render json: { success: true }, status: 201
-    else
-      render json: { errors: { developer: "must be a project candidate" } }, status: 422
     end
+    render_response(project)
   end
 
   def set_developer_score
