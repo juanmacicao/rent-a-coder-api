@@ -9,6 +9,15 @@ class ProjectsController < ApplicationController
     }
   end
 
+  def show
+    project = Project.find(params[:id])
+    if project.owner == current_user
+      render json: project
+    else
+      render json: { errors: "action denied" }
+    end
+  end
+
   def create
     project = Project.new(project_params)
     if project.save
