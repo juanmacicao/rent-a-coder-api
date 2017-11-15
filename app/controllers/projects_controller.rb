@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
 
   def index
     projects_offered = Offer.select(:project_id).where(user_id: current_user.id)
-    projects_to_bid = Project.where("owner_id != ? AND id NOT IN (?)", current_user.id, projects_offered)
+    projects_to_bid = Project.where("owner_id != ? AND id NOT IN (?)", current_user.id, projects_offered).order(:deadline)
     render json: {
       projects: projects_to_bid.map { |project| FullProjectSerializer.new(project) }
     }
