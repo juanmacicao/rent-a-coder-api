@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
     developer_selected = User.find(params[:developer_id])
     if project.owner != current_user
       project.errors.add(:owner, :invalid)
-    elsif project.state != 'open'
+    elsif project.state != 'offered'
       project.errors.add(:state, :invalid)
     elsif !project.candidates.include?(developer_selected)
       project.errors.add(:developer, :invalid)
