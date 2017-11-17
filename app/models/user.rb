@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_many :offers
   has_many :projects_offered, through: :offers, source: :project
 
+  has_and_belongs_to_many :technologies
+
   validates :name, :nickname, :city, :country, :tel, :web, presence: true
   validates :name, format: { with: /\A[a-zA-Z0-9]( ?[a-zA-Z0-9.-])+\z/ }
   validates :nickname, format: { with: /\A[a-zA-Z\d_]{1,14}\z/ }, uniqueness: true
