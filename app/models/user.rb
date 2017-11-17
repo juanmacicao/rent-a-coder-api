@@ -30,6 +30,11 @@ class User < ActiveRecord::Base
     offers.map { |offer| ProjectSerializer.new(offer.project) }
   end
 
+  def projects_done
+    project = Project.where(developer_id: self.id, state: 'finished')
+    project.map { |project| ProjectSerializer.new(project) }
+  end
+
   def developer_score
     score = 0
     projects = Project.where(developer_id: self.id)

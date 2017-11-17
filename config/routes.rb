@@ -4,7 +4,8 @@ Rails.application.routes.draw do
     sessions: 'overrides/sessions'
   }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resource :users, only: [:show], path: '/profile'
+  resources :users, only: [:show]
+  get '/profile', to: 'users#profile'
   resources :projects, only: [:create, :index, :update, :show] do
     post 'developer', to: 'projects#assign_developer'
     post 'developer_score', to: 'projects#set_developer_score'
