@@ -14,6 +14,6 @@ class Project < ApplicationRecord
   private
 
   def deadline_not_in_past
-    errors.add(:deadline, "must be in future") if deadline.present? && deadline <= Date.today
+    errors.add(:deadline, "must be in future") if deadline.present? && deadline < Date.today
   end
 end
