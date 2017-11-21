@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users, only: [:show]
+  resource :users, only: [:update]
   get '/profile', to: 'users#profile'
   resources :projects, only: [:create, :index, :update, :show] do
     post 'developer', to: 'projects#assign_developer'
