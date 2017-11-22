@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   private
 
   def uploaded_projects
-    projects = Project.where("owner_id == ? AND deadline >= ?", self.id, Date.today)
+    projects = Project.where("owner_id = ? AND deadline >= ?", self.id, Date.today)
     projects.map { |project| ProjectSerializer.new(project) }
   end
 
