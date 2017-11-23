@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable
-          #:confirmable
 
   include DeviseTokenAuth::Concerns::User
 
@@ -26,7 +25,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_as_candidate
-    offers = Offer.joins(:project).where(user_id: self.id)
+    offers = Offer.joins(:project).where("projects.developer_id = ? OR (projects.developer_id IS NULL AND projects.deadline >= ? AND offers.user_id = ?)", self.id, Date.today, self.id)
     offers.map { |offer| ProjectSerializer.new(offer.project) }
   end
 
