@@ -87,7 +87,7 @@ class ProjectsController < ApplicationController
   private
   def project_params
     technologies = Technology.where(id: params[:technologies_ids])
-    params.permit(:name, :description, :deadline).merge(state: 'open', technologies: technologies, owner: current_user, owner_score: 0, developer_score: 0)
+    params.permit(:name, :description, :deadline).merge(state: 'open', technologies: technologies, owner: current_user)
   end
 
   def render_response(project)

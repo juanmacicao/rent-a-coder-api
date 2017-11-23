@@ -37,19 +37,19 @@ class User < ActiveRecord::Base
 
   def developer_score
     score = 0
-    projects = Project.where(developer_id: self.id)
+    projects = Project.where("developer_id = ? AND state = ? AND developer_score IS NOT NULL", self.id, 'finished')
     projects.each { |project|
-      score += project.developer_score unless project.developer_score.nil?
+      score += project.developer_score
     }
-    score
+    projects.count == 0 ? score : score / projects.count
   end
 
   def owner_score
     score = 0
-    projects = Project.where(owner_id: self.id)
+    projects = Project.where("owner_id = ? AND state = ? AND owner_score IS NOT NULL", self.id, 'finished')
     projects.each { |project|
-      score += project.owner_score unless project.owner_score.nil?
+      score += project.owner_score
     }
-    score
+    projects.count == 0 ? score : score / projects.count
   end
 end

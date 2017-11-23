@@ -8,7 +8,7 @@ class Project < ApplicationRecord
   has_many :candidates, through: :offers, source: :user
 
   validates :name, :description, :deadline, presence: true
-  validates :owner_score, :developer_score, numericality: { only_integer: true, greater_or_equal_to: 0, less_than_or_equal_to: 5 }
+  validates :owner_score, :developer_score, numericality: { only_integer: true, greater_or_equal_to: 0, less_than_or_equal_to: 5 }, allow_nil: true
   validate :deadline_not_in_past
 
   private
